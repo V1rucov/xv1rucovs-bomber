@@ -12,7 +12,7 @@ namespace xv1Bomb
     {
         static async Task Main(string[] args)
         {
-            register();
+            Register();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(@"    __      ____ ____                  _               ");
             Console.WriteLine(@"    \ \    / /_ |  _ \                | |              ");
@@ -41,16 +41,15 @@ namespace xv1Bomb
             int repeat = Int32.Parse(Console.ReadLine());
             
             await bomber.StartBombing(phoneNumber, CTS.Token, repeat, delay);
-            //if(Console.ReadLine()=="") CTS.Cancel();
             
+            if(Console.ReadLine()=="") CTS.Cancel();
         }
-
-        static void register()
+        private static void Register()
         {
             smsProviderRegistry.Register(new sushiStudioProvider());
             smsProviderRegistry.Register(new posudaProvider());
-            smsProviderRegistry.Register(new kitchenProvider());
-            smsProviderRegistry.Register(new deliveryProvider());
+            smsProviderRegistry.Register(new dominosProvider());
+            //smsProviderRegistry.Register(new mvideoProvider());
         }
     }
 }
