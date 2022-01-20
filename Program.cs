@@ -24,7 +24,9 @@ namespace xv1Bomb
             bomber.AddObserver(new kari());
             bomber.AddObserver(new bapteka());
             bomber.AddObserver(new yandexGo());
-            bomber.AddObserver(new goldapple());
+            bomber.AddObserver(new burgerking());
+            bomber.AddObserver(new sushistudio());
+            //bomber.AddObserver(new dodoPizza());
 
             CancellationTokenSource cts = new CancellationTokenSource();
             

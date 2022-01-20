@@ -31,6 +31,7 @@ namespace xv1Bomb
                         Console.ForegroundColor = ConsoleColor.DarkMagenta;
                         Console.WriteLine(site.Link);
                         Console.ForegroundColor = ConsoleColor.White;
+                        WebDriver.Manage().Window.Maximize();
                         WebDriver.Navigate().GoToUrl(site.Link);
                         site.Handle(WebDriver,phoneNumber);
                         Thread.Sleep(delay);
