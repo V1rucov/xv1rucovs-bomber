@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using xv1Bomb.providers;
+using xv1Bomb.WebSites;
 
 namespace xv1Bomb
 {
@@ -12,7 +10,6 @@ namespace xv1Bomb
     {
         static async Task Main(string[] args)
         {
-            Register();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(@"    __      ____ ____                  _               ");
             Console.WriteLine(@"    \ \    / /_ |  _ \                | |              ");
@@ -23,7 +20,13 @@ namespace xv1Bomb
             Console.WriteLine();
 
             var bomber = new Bomber();
-            CancellationTokenSource CTS = new CancellationTokenSource();
+            bomber.AddObserver(new posudaMart());
+            bomber.AddObserver(new kari());
+            bomber.AddObserver(new bapteka());
+            bomber.AddObserver(new yandexGo());
+            bomber.AddObserver(new goldapple());
+
+            CancellationTokenSource cts = new CancellationTokenSource();
             
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Введите номер жертвы в формате (XXX)(XXX)(XX)(XX). Пример - 9641241212 ");
@@ -40,16 +43,10 @@ namespace xv1Bomb
             Console.ForegroundColor = ConsoleColor.White;
             int repeat = Int32.Parse(Console.ReadLine());
             
-            await bomber.StartBombing(phoneNumber, CTS.Token, repeat, delay);
-            
-            if(Console.ReadLine()=="") CTS.Cancel();
-        }
-        private static void Register()
-        {
-            smsProviderRegistry.Register(new sushiStudioProvider());
-            smsProviderRegistry.Register(new posudaProvider());
-            smsProviderRegistry.Register(new dominosProvider());
-            //smsProviderRegistry.Register(new mvideoProvider());
+            await bomber.Start(phoneNumber, cts.Token, repeat, delay);
+
+            if(Console.ReadLine()=="") cts.Cancel();
+            Console.ReadLine();
         }
     }
 }

