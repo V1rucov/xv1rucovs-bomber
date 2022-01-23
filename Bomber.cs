@@ -28,6 +28,7 @@ namespace xv1Bomb
             for (int i = 0;i<repeat;i++) {
                 foreach (var site in Websites) {
                     if (!ct.IsCancellationRequested) {
+                        if (site == null) throw new NullReferenceException();
                         Console.ForegroundColor = ConsoleColor.DarkMagenta;
                         Console.WriteLine(site.Link);
                         Console.ForegroundColor = ConsoleColor.White;

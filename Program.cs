@@ -20,13 +20,16 @@ namespace xv1Bomb
             Console.WriteLine();
 
             var bomber = new Bomber();
-            bomber.AddObserver(new posudaMart());
-            bomber.AddObserver(new kari());
-            bomber.AddObserver(new bapteka());
-            bomber.AddObserver(new yandexGo());
-            bomber.AddObserver(new burgerking());
-            bomber.AddObserver(new sushistudio());
+            //bomber.AddObserver(new posudaMart());
+            //bomber.AddObserver(new kari());
+            //bomber.AddObserver(new bapteka());
+            //bomber.AddObserver(new yandexGo());
+            //bomber.AddObserver(new burgerking());
+            //bomber.AddObserver(new sushistudio());
             //bomber.AddObserver(new dodoPizza());
+            //bomber.AddObserver(new cenalom());
+            //bomber.AddObserver(new kfc());
+            bomber.AddObserver(new kdvonline());
 
             CancellationTokenSource cts = new CancellationTokenSource();
             
